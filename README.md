@@ -8,11 +8,11 @@ Après votre première mise a disposition du fichier des communes française les
 
 ### Travail préparatoire
 
-démarrer hadoop sur la vm avec le script ~/start-hadoop.sh 
+démarrer hadoop sur la vm avec le script ~/start-hadoop.sh
 
-* créer l'arborescence suivante sur hdfs /data/raw/cities/v1/csv/ sur hdfs 
-* copier le fichier /user/simplon/laposte_hexasmal.csv dans le repertoire /data/raw/cities/v1/csv/ 
-* créer une table hive externe nommée cities qui pointe sur le répertoire /data/raw/cities/v1/csv/ 
+* créer l'arborescence suivante sur hdfs /data/raw/cities/v1/csv/ sur hdfs
+* copier le fichier /user/simplon/laposte_hexasmal.csv dans le repertoire /data/raw/cities/v1/csv/
+* créer une table hive externe nommée cities qui pointe sur le répertoire /data/raw/cities/v1/csv/
 * utiliser tblproperties ('skip.header.line.count'='1') lors de la création pour ignore le header du fichier csv.
 
 ```bash
@@ -76,7 +76,7 @@ df_hive.printSchema()
 df_hdfs.printSchema()
 ```
 
-Créer un dataframe à partir de la liste de personne ci-dessous people_list = [('john', 'doe', 34, 75018), ('jane', 'doe', 42, 64310), ('paul', 'martin', 14, 33600)] 
+Créer un dataframe à partir de la liste de personne ci-dessous people_list = [('john', 'doe', 34, 75018), ('jane', 'doe', 42, 64310), ('paul', 'martin', 14, 33600)]
 Le nom et type de colonnes sont: FirstName: string LastName: string Age: long ZipCode: long
 
 ```spark
@@ -87,12 +87,11 @@ df_people.dtypes
 df_people.printSchema()
 ```
 
-écrire le dataframe de personne dans HDFS au format parquet dans le répertoire /raw/people/v1/parquet 
+écrire le dataframe de personne dans HDFS au format parquet dans le répertoire /raw/people/v1/parquet
 
 ```bash
 hdfs dfs -mkdir -p /raw/people/v1/
 ```
-
 
 ```spark
 df_people.write.mode("overwrite").parquet('/raw/people/v1/parquet/')
@@ -111,8 +110,8 @@ spark.sql("alter table people set tblproperties('EXTERNAL'='FALSE')")
 
 * créer un fichier python
 * créer une spark session
-* créer un dataframe de cities en utilisant le fichier csv cities 
-* écrire le dataframe de cities dans HDFS au format parquet dans /experiment/cities/v1/parquet 
+* créer un dataframe de cities en utilisant le fichier csv cities
+* écrire le dataframe de cities dans HDFS au format parquet dans /experiment/cities/v1/parquet
 * faire en sorte que les données soient écrasées si on relance notre application stopper la spark session
 
 * supprimer les données cities sur HDFS Lancer votre fichier python en utilisant spark-submit vérifier que les données ont bien été créées
@@ -147,24 +146,24 @@ spark.sql("alter table people set tblproperties('EXTERNAL'='FALSE')")
 
 ### Aggregation & Jointure
 
-* à partir du dataframe clean_cities 
-* créer un nouveau dataframe contenant le nombre de communes par département, 
-* sauvegarder le résultat dans un fichier csv unique trié par ordre décroissant de compte (le département contenant le plus de villes doit être sur la première ligne) 
+* à partir du dataframe clean_cities
+* créer un nouveau dataframe contenant le nombre de communes par département,
+* sauvegarder le résultat dans un fichier csv unique trié par ordre décroissant de compte (le département contenant le plus de villes doit être sur la première ligne)
 * sauvegarder le résultat sur hdfs au format csv dans le dossier /refined/departement/v1/csv
 
 ### UDF
 
-* Créer la fonction departement_udf qui a les mêmes paramètres d'entrée et sortie que la fonction département précédente, mais qui calcule correctement le département corse en utilisant une UDF (utiliser le test du chapitre précédent pour tester que votre fonction marche bien. 
+* Créer la fonction departement_udf qui a les mêmes paramètres d'entrée et sortie que la fonction département précédente, mais qui calcule correctement le département corse en utilisant une UDF (utiliser le test du chapitre précédent pour tester que votre fonction marche bien.
 
-* sauvegarder le résultat sur HDFS en csv dans le dossier /refined/departement/v2/csv 
-* Faire une nouvelle fonction departement_fct qui gère le cas de la Corse sans UDF, mais uniquement avec les fonctions disponible dans sur les colonnes. vous pouvez par exemple utiliser les fonctions ; case, when 
+* sauvegarder le résultat sur HDFS en csv dans le dossier /refined/departement/v2/csv
+* Faire une nouvelle fonction departement_fct qui gère le cas de la Corse sans UDF, mais uniquement avec les fonctions disponible dans sur les colonnes. vous pouvez par exemple utiliser les fonctions ; case, when
 * Une fois les fonctions terminées dans le main de votre application faire un benchmark pour voir laquelle des deux solutions est la plus rapide.
 
 ### Window Function
 
-* À l'aide de window function à chaque ville ajouter les coordonnées GPS de la préfecture du département. 
-* On la préfecture du département se situe dans la ville ayant le code postal le plus petit dans tout le département. Pour l’exercice on considère également que la Corse est un seul département (on ne sépare pas la haute corse et la corse du sud). 
-* Une fois la préfecture trouvée, calculer la distance relative de chaque ville par rapport à la préfecture. On ne cherche pas une distance en km. 
+* À l'aide de window function à chaque ville ajouter les coordonnées GPS de la préfecture du département.
+* On la préfecture du département se situe dans la ville ayant le code postal le plus petit dans tout le département. Pour l’exercice on considère également que la Corse est un seul département (on ne sépare pas la haute corse et la corse du sud).
+* Une fois la préfecture trouvée, calculer la distance relative de chaque ville par rapport à la préfecture. On ne cherche pas une distance en km.
 * calculer la distance moyenne et médiane à la préfecture par département sauvegarder le résultat sur HDFS en csv dans le dossier /refined/departement/v3/csv
 
 ### Scala
