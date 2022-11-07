@@ -65,7 +65,7 @@ Lire la table hive cities
 
 ```spark
 spark.sql("show tables").show()
-df_hive = spark.sql("select * from cities2 limit 5")
+df_hive = spark.sql("select * from cities limit 5")
 df_hive.show()
 ```
 
