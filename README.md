@@ -22,8 +22,8 @@ hdfs dfs -cp laposte_hexasmal.csv /data/raw/cities/v1/csv/laposte_hexasmal.csv
 ```
 
 ```hive
-DROP TABLE cities2;
-CREATE EXTERNAL TABLE cities2 
+DROP TABLE cities;
+CREATE EXTERNAL TABLE cities
 (
   code_commune_insee string,
   nom_de_la_commune string,
