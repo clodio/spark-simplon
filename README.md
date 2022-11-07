@@ -58,7 +58,7 @@ pyspark3
 Lire le fichier csv cities depuis HDFS
 
 ```spark
-df_hdfs = spark.read.csv("/data/raw/cities/v1/csv/laposte_hexasmal.csv", header=True, sep=";")
+df_hdfs = spark.read.csv("hdfs:///data/raw/cities/v1/csv/laposte_hexasmal.csv", header=True, sep=";")
 ```
 
 Lire la table hive cities
@@ -94,7 +94,7 @@ hdfs dfs -mkdir -p /raw/people/v1/
 ```
 
 ```spark
-df_people.write.mode("overwrite").parquet('/raw/people/v1/parquet/')
+df_people.write.mode("overwrite").parquet('hdfs:///raw/people/v1/parquet/')
 ```
 
 écrire le dataframe de personne dans une table hive nommée 'people' la table doit être une table interne
